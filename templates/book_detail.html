@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.title }}</title>
+</head>
+<body>
+    <h1>{{ book.title }}</h1>
+    <p><strong>Автор:</strong> {{ book.author }}</p>
+    <p>{{ book.description }}</p>
+
+    {% if book.image %}
+        <img src="{{ book.image.url }}" width="200">
+    {% endif %}
+    <p>
+        Год выпуска: {{ book.create_date_book }}
+    </p>
+    
+    {% if book.file_book %}
+    <p>
+        <a href="{{ book.file_book.url }}">Скачать книгу</a>
+    </p>
+    {% endif %}
+    {% if book.book_url %}
+    <p>
+        <a href="{{ book.book_url }}">Ссылка на электронную книгу</a>
+    </p>
+    {% endif %}
+    <p>
+        Опубликовно: {{ book.contact_email }} 
+    </p>
+    <p>
+        Дата: {{ book.create_at }}
+    </p>
+    <p> Публикация выполнена успешно - {{ book.is_published }} </p>
+    
+</body>
+</html>
