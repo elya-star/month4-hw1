@@ -1,0 +1,26 @@
+<h1>Список пользовталей с тегами</h1>
+
+{% for i in name_person %}
+
+<p>{{ i.namePerson }}</p>
+
+<p>Теги</p>
+    
+    {% for j in i.tags.all %}
+    <p>#{{ j.name }}</p>
+    {% endfor %}
+
+ <p>Коменнтарии</p>
+
+ 
+ {% for k in i.review.all %}
+
+<p>{{ k.marks }}</p>
+<p>{{ k.text }}</p>
+<p>{{ k.created_at }}</p>
+
+    {% endfor %}
+
+
+{% endfor %}
+ 
