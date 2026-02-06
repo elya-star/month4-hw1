@@ -1,0 +1,19 @@
+<center>
+
+<h1>Список продуктов с категориями</h1>
+
+</center>
+{% for i in products %}
+
+<p><strong>{{ i.name_product }}</strong></p>
+
+<p>Категория: {{ i.category.name }}</p>
+
+
+
+{% endfor %}
+
+<strong><a href="/categories/">Список категорий</a>
+</strong>
+
+

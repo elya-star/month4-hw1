@@ -1,0 +1,16 @@
+<center>
+    <h1>Категория: {{ category.name }}</h1>
+</center>
+
+{% if products  %}
+    {% for i in products %}
+        <p>
+            <strong>{{ i.name_product }}</strong> - {{ i.price }}
+        </p>
+    {% endfor %}
+
+{% else %}
+        <p>В этой категории пока нет продуктов</p>
+{% endif %}
+
+<strong><a href="/categories/">Назад к категориям</a></strong>
