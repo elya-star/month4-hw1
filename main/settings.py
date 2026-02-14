@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'book',
     'relation_db',
     'myShop',
+    'resume',
+    'django_recaptcha',
 ]
 
 MIDDLEWARE = [
@@ -109,3 +111,15 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+RECAPTCHA_PUBLIC_KEY = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
+RECAPTCHA_PRIVATE_KEY = '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
+
+SILENCED_SYSTEM_CHECKS = ['django_recaptcha.recaptcha_test_key_error']
+
+AUTH_USER_MODEL = 'resume.CustomUser'
+
+
+
+

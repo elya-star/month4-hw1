@@ -1,0 +1,19 @@
+<h1>Здравствуйте {{ user.username }}</h1>
+
+<p>Ваша должность: {{ user.position }}</p>
+<p>Город: {{ user.city }}</p>
+<p>Номер телефона: {{ user.phone_number }}</p>
+<p>День рождения: {{ user.birth_date }}</p>
+<p>Образование: {{ user.education }}</p>
+<p>Пол: {{ user.gender }}</p>
+<p>Опыт: {{ user.experience }}</p>
+<p>Навыки: {{ user.skills }}</p>
+<p>Портфолио: {{ user.portfolio }}</p>
+
+{% if user.photo %}
+    <img src="{{ user.photo.url }}" width="150">
+{% else %}
+    <p>Фото не загружено</p>
+{% endif %}
+
+
