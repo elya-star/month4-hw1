@@ -1,7 +1,7 @@
 <center>
 
 <h1>Добавить язык программирования</h1>
-<form action="/create_book/" method="post" enctype="multipart/form-data">
+<form action="{% url 'library:create_book' %}" method="post" enctype="multipart/form-data">
 
     {% csrf_token %}
 

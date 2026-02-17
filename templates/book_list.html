@@ -1,16 +1,48 @@
 <center>
-<button><a href="/create_book/">Добавить</a></button>
+
+<form action="/search/" method="GET">
+    <input type="text" name="s" placeholder="Поиск книги..." value="{{ query }}">
+    <button type="submit">Найти</button>
+</form>
+
+<br>
+<a href="{% url 'library:create_book' %}">
+    <button>Добавить книгу</button>
+</a>
 <br><br>
 
-{% for i in book %}
+{% for book in page_obj %}
+    <div style="margin-bottom: 20px;">
+        {% if book.image %}
+            <img src="{{ book.image.url }}" width="200" alt="{{ book.title }}">
+        {% else %}
+            <p>Нет изображения</p>
+        {% endif %}
 
-<img src="{{ i.image.url }}" alt="" width="300" height="400">
-<h1>{{ i.title }}</h1>
-<p> <a href="/books/{{ i.id }}/">Подробнее</a> </p>
-<p> <a href="/books/{{ i.id }}/delete/">Удалить</a> </p>
-<p> <a href="/books/{{ i.id }}/update/">Редактировать</a> </p>
+        <h2>{{ book.title }}</h2>
 
+        <p><a href="{% url 'library:spisok_knig' %}{{ book.id }}/">Подробнее</a></p>
+        <p><a href="{% url 'library:spisok_knig' %}{{ book.id }}/update/">Редактировать</a></p>
+        <p><a href="{% url 'library:spisok_knig' %}{{ book.id }}/delete/">Удалить</a></p>
 
+        <hr>
+    </div>
+{% empty %}
+    <p>Книги не найдены.</p>
 {% endfor %}
+
+<div style="margin-top: 20px;">
+    {% if page_obj.has_previous %}
+        <a href="?page=1{% if query %}&q={{ query }}{% endif %}">Первая</a>
+        <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">Назад</a>
+    {% endif %}
+
+    <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">Вперед</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}">Последняя</a>
+    {% endif %}
+</div>
 
 </center>

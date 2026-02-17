@@ -1,5 +1,26 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from . import models, forms
+from django.core.paginator import Paginator
+
+def search_book_view(request):
+    query = request.GET.get("s", '')
+    if query:
+        books = models.Books.objects.filter(title__icontains=query)
+    else:
+        books = models.Books.objects.none
+    paginator = Paginator(books, 2)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(
+        request,
+        'book_list.html',
+        {
+             "page_obj": page_obj,
+             "query": query,
+        }
+
+    )
+
 
 #UPDATE BOOK
 def update_book_view(request, id):
@@ -8,7 +29,7 @@ def update_book_view(request, id):
         form = forms.BookForm(request.POST, instance=book_id)
         if form.is_valid():
             form.save()
-            return redirect('/book/')
+            return redirect('/books/')
     else:
         form = forms.BookForm(instance=book_id)
     return render(
@@ -24,7 +45,7 @@ def update_book_view(request, id):
 def delete_book_view(request, id):
     book_id = get_object_or_404(models.Books, id=id)
     book_id.delete()
-    return redirect('/book/')
+    return redirect('/book_list/')
 
 #CREATE BOOK
 def create_book_view(request):
@@ -32,7 +53,7 @@ def create_book_view(request):
         form = forms.BookForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('/book/')
+            return redirect('/books/')
     else:
         form = forms.BookForm()
         
@@ -58,11 +79,16 @@ def book_detail(request, id):
 
 def book_list(request):
     if request.method == "GET":
-        book = models.Books.objects.all()
+        books = models.Books.objects.all()
+        paginator = Paginator(books, 2)  
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
+
         return render(
-            request, 
-            'book_list.html',
+            request,
+            "book_list.html",
             {
-                "book": book
-            } 
+                "page_obj": page_obj
+            }
         )
+
