@@ -4,10 +4,11 @@ from django.core.paginator import Paginator
 
 def search_book_view(request):
     query = request.GET.get("s", '')
+    all_books = models.Books.objects.all().order_by('id')
     if query:
-        books = models.Books.objects.filter(title__icontains=query)
+        books = [b for b in all_books if query in b.title.lower()]
     else:
-        books = models.Books.objects.none
+        books = all_books
     paginator = Paginator(books, 2)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
