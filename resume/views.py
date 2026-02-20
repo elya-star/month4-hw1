@@ -1,57 +1,42 @@
-from django.shortcuts import render, redirect
+from django.views import generic
 from django.contrib.auth import login, logout
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
-from .forms import CustomUserForm
-from django_recaptcha.fields import ReCaptchaField
-from django_recaptcha.widgets import ReCaptchaV2Checkbox
-from django import forms
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+from .forms import CustomUserForm, LoginForm
 
 
-class LoginForm(AuthenticationForm):
-    captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
+
+class RegisterView(generic.CreateView):
+    form_class = CustomUserForm
+    template_name = "register.html"
+    success_url = reverse_lazy("login")
 
 
-def register_view(request):
-    if request.method == 'POST':
-        form = CustomUserForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-    else:
-        form = CustomUserForm()
 
-    return render(request, 
-                  'register.html', 
-                  {'form': form}
-                  )
+class AuthLoginView(generic.FormView):
+    form_class = LoginForm
+    template_name = "login.html"
+    success_url = reverse_lazy("profile")
+
+    def form_valid(self, form):
+        user = form.get_user()
+        login(self.request, user)
+        return super().form_valid(form)
 
 
-def auth_login_view(request):
-    if request.method == 'POST':
-        form = LoginForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('profile')
-    else:
-        form = LoginForm()
+class AuthLogoutView(generic.RedirectView):
+    url = reverse_lazy("login")
 
-    return render(request, 
-                  'login.html', 
-                  {'form': form}
-                  )
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return super().get(request, *args, **kwargs)
 
 
-def auth_logout_view(request):
-    logout(request)
-    return redirect('login')
+class ProfileView(LoginRequiredMixin, generic.TemplateView):
+    template_name = "profile.html"
 
-
-@login_required
-def profile_view(request):
-    user = request.user
-    return render(request, 'profile.html',
-                  {
-                      'user': user
-                  })
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user"] = self.request.user
+        return context

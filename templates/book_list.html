@@ -1,6 +1,6 @@
 <center>
 
-<form action="/search/" method="GET">
+<form action="{% url 'library:book_search' %}" method="GET">
     <input type="text" name="s" placeholder="Поиск книги..." value="{{ query }}">
     <button type="submit">Найти</button>
 </form>
@@ -21,9 +21,9 @@
 
         <h2>{{ book.title }}</h2>
 
-        <p><a href="{% url 'library:spisok_knig' %}{{ book.id }}/">Подробнее</a></p>
-        <p><a href="{% url 'library:spisok_knig' %}{{ book.id }}/update/">Редактировать</a></p>
-        <p><a href="{% url 'library:spisok_knig' %}{{ book.id }}/delete/">Удалить</a></p>
+        <p><a href="{% url 'library:book_detail' book.id%}">Подробнее</a></p>
+        <p><a href="{% url 'library:update_book' book.id %}">Редактировать</a></p>
+        <p><a href="{% url 'library:delete_book' book.id %}">Удалить</a></p>
 
         <hr>
     </div>
@@ -33,15 +33,15 @@
 
 <div style="margin-top: 20px;">
     {% if page_obj.has_previous %}
-        <a href="?page=1{% if query %}&q={{ query }}{% endif %}">Первая</a>
-        <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">Назад</a>
+        <a href="?page=1{% if query %}&s={{ query }}{% endif %}">Первая</a>
+        <a href="?page={{ page_obj.previous_page_number }}{% if query %}&s={{ query }}{% endif %}">Назад</a>
     {% endif %}
 
     <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
 
     {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">Вперед</a>
-        <a href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}">Последняя</a>
+        <a href="?page={{ page_obj.next_page_number }}{% if query %}&s={{ query }}{% endif %}">Вперед</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}{% if query %}&s={{ query }}{% endif %}">Последняя</a>
     {% endif %}
 </div>
 

@@ -1,15 +1,9 @@
-from django.shortcuts import render
+from django.views.generic import ListView
 from . import models
 
 
-def relation_db(request):
-    if request.method == 'GET':
-        name_person = models.Person.objects.all()
-        return render (
-            request, 
-            'relation_db.html', 
-            {
-                "name_person": name_person
-            }
-        )
-# Create your views here.
+class RelationDBView(ListView):
+    model = models.Person
+    template_name = "relation_db.html"
+    context_object_name = "name_person"
+

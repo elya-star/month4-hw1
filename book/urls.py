@@ -4,11 +4,11 @@ from . import views
 app_name='library'
 
 urlpatterns = [
-    path('books/', views.book_list, name='spisok_knig'),
-    path('books/<int:id>/', views.book_detail),
-    path('books/<int:id>/delete/', views.delete_book_view),
-    path('books/<int:id>/update/', views.update_book_view),
-    path('create_book/', views.create_book_view, name='create_book'),
-    path('search/', views.search_book_view),
+    path('books/', views.BookListView.as_view(), name='book_search'),
+    path('books/<int:id>/', views.BookDetailView.as_view(), name="book_detail"),
+    path('books/<int:id>/delete/', views.BookDeleteView.as_view(), name='delete_book'),
+    path('books/<int:id>/update/', views.BookUpdateView.as_view(), name='update_book'),
+    path('create_book/', views.BookCreateView.as_view(), name='create_book'),
+
    
 ]

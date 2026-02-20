@@ -1,0 +1,8 @@
+<h2>Удалить книгу?</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Да, удалить</button>
+</form>
+
+<a href="{% url 'library:book_search' %}">Отмена</a>

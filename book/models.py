@@ -11,6 +11,8 @@ class Books(models.Model):
     contact_email = models.EmailField(verbose_name='укажите свой email', blank=True)
     is_published = models.BooleanField(default=True, verbose_name='опубликована')
     create_at = models.DateTimeField(auto_now_add=True)
+    
+
 
     def __str__(self):
         return self.title
